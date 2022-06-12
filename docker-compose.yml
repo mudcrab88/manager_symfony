@@ -1,0 +1,43 @@
+version: '3'
+services:
+    manager-nginx:
+        build:
+            context: ./manager/docker/development
+            dockerfile: nginx.docker
+        volumes:
+            - ./manager:/app
+        depends_on:
+            - manager-php-fpm
+        ports:
+            - "8081:80"
+    manager-php-fpm:
+        build:
+            context: ./manager/docker/development
+            dockerfile: php-fpm.docker
+        environment:
+            APP_DEBUG: 1
+        volumes:
+            - ./manager:/app
+    manager-php-cli:
+        build:
+            context: ./manager/docker/development
+            dockerfile: php-cli.docker
+        environment:
+            APP_DEBUG: 1
+        volumes:
+            - ./manager:/app
+            - composer:/root/.composer/cache
+    manager-postgres:
+        image: postgres:11.2-alpine
+        volumes:
+            - manager-postgres:/var/lib/postgresql/data
+        environment:
+          POSTGRES_USER : app
+          POSTGRES_PASSWORD : secret
+          POSTGRES_DB : app
+        ports:
+            - "54321:5432"
+
+volumes:
+    manager-postgres:
+    composer:
