@@ -1,0 +1,13 @@
+{% extends 'auth.html.twig' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block body %}
+    <h1>Sign Up</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <button type="submit" class="btn btn-block btn-success">Create Account</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

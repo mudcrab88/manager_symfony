@@ -8,10 +8,14 @@ class Command
 {
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     public $email;
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6)
      */
     public $password;
 }
