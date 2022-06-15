@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model;
 
-use Symfony\Component\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\ORM\EntityManagerInterface;
 use TheCodency\TheCms\Core\Shared\Domain\AggregateRoot;
 

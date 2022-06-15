@@ -13,7 +13,7 @@ class ConfirmTokenSender
     private $twig;
     private $from;
 
-    public function __construct(\Swift_Mailer $mailer, Environment $twig, array $from)
+    public function __construct(/*\Swift_Mailer $mailer,*/ Environment $twig, array $from)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
