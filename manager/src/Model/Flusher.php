@@ -13,10 +13,9 @@ class Flusher
     private $em;
     private $dispatcher;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcher $dispatcher)
+    public function __construct(EntityManagerInterface $em/*, EventDispatcher $dispatcher*/)
     {
         $this->em = $em;
-        $this->dispatcher = $dispatcher;
     }
 
     public function flush(AggregateRoot ...$roots): void

@@ -79,6 +79,6 @@ class UserRepository
 
     public function add(User $user): void
     {
-        //$this->em->persist($user);
+        $this->em->persist($user);
     }
 }

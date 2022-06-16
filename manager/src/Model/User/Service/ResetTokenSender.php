@@ -6,6 +6,8 @@ namespace App\Model\User\Service;
 
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\ResetToken;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Twig\Environment;
 
 class ResetTokenSender
@@ -14,7 +16,7 @@ class ResetTokenSender
     private $twig;
     private $from;
 
-    public function __construct(\Swift_Mailer $mailer, Environment $twig, array $from)
+    public function __construct(MailerInterface $mailer, Environment $twig, string $from)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -23,14 +25,16 @@ class ResetTokenSender
 
     public function send(Email $email, ResetToken $token): void
     {
-        $message = (new \Swift_Message('Password resetting'))
-            ->setFrom($this->from)
-            ->setTo($email->getValue())
-            ->setBody($this->twig->render('mail/user/reset.html.twig', [
+        $message = (new \Symfony\Component\Mime\Email())
+            ->from($this->from)
+            ->to($email->getValue())
+            ->html($this->twig->render('mail/user/reset.html.twig', [
                 'token' => $token->getToken()
-            ]), 'text/html');
+            ]));
 
-        if (!$this->mailer->send($message)) {
+        try {
+            $this->mailer->send($message);
+        } catch (TransportExceptionInterface $e) {
             throw new \RuntimeException('Unable to send message.');
         }
     }
