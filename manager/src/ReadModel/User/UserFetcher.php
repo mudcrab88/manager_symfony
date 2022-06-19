@@ -29,4 +29,34 @@ class UserFetcher
                 ->setParameter(':token', $token)
                 ->executeQuery()->fetchNumeric() > 0;
     }
+
+    public function findForAuth(string $email): ?AuthView
+    {
+        $stmt = $this->connection->createQueryBuilder()
+            ->select(
+                'id',
+                'email',
+                'password_hash',
+                'role',
+                'status'
+            )
+            ->from('user_users')
+            ->where('email = :email')
+            ->setParameter('email', $email)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        $result = null;
+        if ($stmt !== false) {
+            $result = new AuthView();
+            $result->id = $stmt['id'];
+            $result->email = $stmt['email'];
+            $result->password_hash = $stmt['password_hash'];
+            $result->role = $stmt['role'];
+            $result->status = $stmt['status'];
+        }
+
+
+        return $result ?: null;
+    }
 }
